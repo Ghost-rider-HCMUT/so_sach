@@ -1,0 +1,68 @@
+# 2026-11-15T09:02:38.045568300Z:
+test_suite_meta_data {
+  scheduled_test_case_count: 1
+}
+test_status: PASSED
+test_result {
+  test_case {
+    test_class: "FullAppUiUxQcTest"
+    test_package: "com.sotraubo.app"
+    test_method: "qc71_dashboard_veryLongNumber_ellipsizesCleanly"
+    start_time {
+      seconds: 1794733348
+      nanos: 901000000
+    }
+    end_time {
+      seconds: 1794733357
+      nanos: 149000000
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "D:\\manager\\app\\build\\outputs\\androidTest-results\\connected\\debug\\Pixel_API_34(AVD) - 14\\logcat-com.sotraubo.app.FullAppUiUxQcTest-qc71_dashboard_veryLongNumber_ellipsizesCleanly.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "D:\\manager\\app\\build\\outputs\\androidTest-results\\connected\\debug\\Pixel_API_34(AVD) - 14\\device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "D:\\manager\\app\\build\\outputs\\androidTest-results\\connected\\debug\\Pixel_API_34(AVD) - 14\\meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "D:\\manager\\app\\build\\outputs\\androidTest-results\\connected\\debug\\Pixel_API_34(AVD) - 14\\cpuinfo"
+    }
+  }
+}
+output_artifact {
+  label {
+    label: "test-results.log"
+    namespace: "com.google.testing.platform.runtime.android.driver.AndroidInstrumentationDriver"
+  }
+  source_path {
+    path: "D:\\manager\\app\\build\\outputs\\androidTest-results\\connected\\debug\\Pixel_API_34(AVD) - 14\\testlog\\test-results.log"
+  }
+  type: TEST_DATA
+  mime_type: "text/plain"
+}

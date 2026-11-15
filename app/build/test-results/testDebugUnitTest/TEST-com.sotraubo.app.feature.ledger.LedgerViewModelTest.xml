@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sotraubo.app.feature.ledger.LedgerViewModelTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-15T14:14:19" hostname="PHONGHQ" time="0.051">
+  <properties/>
+  <testcase name="save and delete goods, exchanges, and family expenses update state flows" classname="com.sotraubo.app.feature.ledger.LedgerViewModelTest" time="0.051"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,43 @@
+INFO: Constructing runner from config.
+INFO: Configuring Android Instrumentation driver: android_instrumentation_runtime {
+  instrumentation_info {
+    app_package: "com.sotraubo.app"
+    test_package: "com.sotraubo.app.test"
+    test_runner_class: "androidx.test.runner.AndroidJUnitRunner"
+  }
+  instrumentation_args {
+    args_map {
+      key: "additionalTestOutputDir"
+      value: "/sdcard/Android/media/com.sotraubo.app/additional_test_output"
+    }
+    args_map {
+      key: "class"
+      value: "com.sotraubo.app.FullAppUiUxQcTest#qc11_dashboard_financialCard_rendersMetricsAndHandlesInitialCapital,com.sotraubo.app.FullAppUiUxQcTest#qc12_dashboard_negativeCashBalance_showsRedAmount,com.sotraubo.app.FullAppUiUxQcTest#qc71_dashboard_veryLongNumber_ellipsizesCleanly"
+    }
+  }
+}
+am_instrument_timeout: 31536000
+
+INFO: Configuring AndroidTestApkInstallerPlugin: apks_to_install {
+  apk_paths: "D:\\manager\\app\\build\\outputs\\apk\\debug\\app-debug.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+apks_to_install {
+  apk_paths: "D:\\manager\\app\\build\\outputs\\apk\\androidTest\\debug\\app-debug-androidTest.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+
+INFO: No installables found in test fixture. Nothing to install.
+INFO: Installing [D:\manager\app\build\outputs\apk\debug\app-debug.apk] on device emulator-5556.
+INFO: Installing [D:\manager\app\build\outputs\apk\androidTest\debug\app-debug-androidTest.apk] on device emulator-5556.
+INFO: Start logcat streaming.
+INFO: Running Android Instrumentation driver.
+INFO: Copying files from device to host: /sdcard/Android/media/com.sotraubo.app/additional_test_output to D:\manager\app\build\outputs\connected_android_test_additional_output\debugAndroidTest\connected\Pixel_API_34(AVD) - 14
+INFO: Stop logcat streaming.
+INFO: Uninstalling com.sotraubo.app for device emulator-5556.
+INFO: Uninstalling com.sotraubo.app.test for device emulator-5556.
+INFO: Execute com.sotraubo.app.FullAppUiUxQcTest.qc71_dashboard_veryLongNumber_ellipsizesCleanly: PASSED

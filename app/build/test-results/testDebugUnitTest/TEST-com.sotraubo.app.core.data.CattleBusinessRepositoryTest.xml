@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sotraubo.app.core.data.CattleBusinessRepositoryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-15T14:14:19" hostname="PHONGHQ" time="0.22">
+  <properties/>
+  <testcase name="TC-01 and TC-02 Purchase with partial payment and subsequent payment updates debt accurately" classname="com.sotraubo.app.core.data.CattleBusinessRepositoryTest" time="0.163"/>
+  <testcase name="TC-05 Bidirectional debt for a single person is kept strictly separate without offsetting" classname="com.sotraubo.app.core.data.CattleBusinessRepositoryTest" time="0.022"/>
+  <testcase name="TC-06 TC-07 TC-11 TC-12 TC-14 Standalone cash, full settlement, edit and delete recalculation and overpayment block" classname="com.sotraubo.app.core.data.CattleBusinessRepositoryTest" time="0.027"/>
+  <testcase name="TC-03 and TC-04 Sale with partial receipt and subsequent receipt updates receivable debt" classname="com.sotraubo.app.core.data.CattleBusinessRepositoryTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

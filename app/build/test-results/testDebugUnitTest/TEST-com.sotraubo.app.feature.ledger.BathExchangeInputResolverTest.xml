@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-11-15T14:14:19" hostname="PHONGHQ" time="0.005">
+  <properties/>
+  <testcase name="transfer with all zero fails" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.001"/>
+  <testcase name="transfer with vnd only succeeds without bath or rate" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.001"/>
+  <testcase name="receive with actual vnd only succeeds without bath or rate" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="transfer with bath and vnd succeeds without rate" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.001"/>
+  <testcase name="transfer with bath only fails and asks for rate or vnd" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="transfer with rate only fails and asks for bath or vnd" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="receive with bath and rate only auto-multiplies to theoretical vnd" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="transfer with bath and rate only auto-multiplies to vnd" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.001"/>
+  <testcase name="receive with bath only and no vnd fails" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="receive with all zero fails" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="receive with bath costRate and sellRate computes both cost and receivable" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="transfer with bath and rate and explicit vnd prefers user vnd" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.0"/>
+  <testcase name="receive with bath and partial vnd succeeds without rate" classname="com.sotraubo.app.feature.ledger.BathExchangeInputResolverTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

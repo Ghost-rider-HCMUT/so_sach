@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sotraubo.app.core.common.VietnameseUtilsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-15T14:14:19" hostname="PHONGHQ" time="0.084">
+  <properties/>
+  <testcase name="normalizeName removes Vietnamese diacritics and handles d-bar" classname="com.sotraubo.app.core.common.VietnameseUtilsTest" time="0.027"/>
+  <testcase name="DateFormatter formats dd_MM_yyyy and computes period range" classname="com.sotraubo.app.core.common.VietnameseUtilsTest" time="0.019"/>
+  <testcase name="matchesQuery supports accented, unaccented and phone search" classname="com.sotraubo.app.core.common.VietnameseUtilsTest" time="0.01"/>
+  <testcase name="CurrencyFormatter formats Long VND and reads Vietnamese words accurately" classname="com.sotraubo.app.core.common.VietnameseUtilsTest" time="0.027"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

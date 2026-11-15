@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-15T14:14:19" hostname="PHONGHQ" time="0.008">
+  <properties/>
+  <testcase name="evaluate respects operator precedence" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.006"/>
+  <testcase name="evaluate ignores trailing operator for live preview" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.0"/>
+  <testcase name="evaluate multiplication for multiple cattle" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.0"/>
+  <testcase name="evaluate division by zero returns null" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.0"/>
+  <testcase name="formatExpressionForDisplay formats thousands and spaces operators" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.001"/>
+  <testcase name="evaluate single formatted number" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.0"/>
+  <testcase name="evaluate division and subtraction" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.0"/>
+  <testcase name="evaluate clamps negative result to zero" classname="com.sotraubo.app.core.common.format.CurrencyExpressionEvaluatorTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
