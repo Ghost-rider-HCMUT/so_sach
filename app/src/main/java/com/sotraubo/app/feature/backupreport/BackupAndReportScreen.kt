@@ -69,6 +69,8 @@ import com.sotraubo.app.core.common.format.CurrencyFormatter
 import com.sotraubo.app.core.common.format.DateFormatter
 import com.sotraubo.app.core.designsystem.component.DropdownSelector
 import com.sotraubo.app.core.designsystem.component.ErrorBanner
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.TimeFilterMode
 import com.sotraubo.app.core.designsystem.component.VietnameseTimeFilterBar
 import com.sotraubo.app.core.designsystem.theme.BluePrimary
@@ -135,7 +137,15 @@ fun BackupAndReportScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Báo cáo PDF & Sao lưu dữ liệu", fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        text = "Báo cáo PDF & Sao lưu dữ liệu",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -144,6 +154,9 @@ fun BackupAndReportScreen(
                             tint = Color.White
                         )
                     }
+                },
+                actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.BACKUP_AND_REPORT)
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,

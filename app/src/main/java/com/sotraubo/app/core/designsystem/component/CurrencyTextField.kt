@@ -1,6 +1,8 @@
 package com.sotraubo.app.core.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -23,31 +26,34 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.sotraubo.app.core.common.format.CurrencyExpressionEvaluator
 import com.sotraubo.app.core.common.format.CurrencyFormatter
 import com.sotraubo.app.core.designsystem.theme.BlueContainer
@@ -63,7 +69,6 @@ import com.sotraubo.app.core.designsystem.theme.SurfaceElevatedDark
  * - Hiển thị số tiền có dấu chấm phân cách và chữ đọc tiếng Việt bên dưới.
  * - Hỗ trợ các nút chọn nhanh (Điền đủ số tiền gợi ý).
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyTextField(
     label: String,
@@ -77,13 +82,22 @@ fun CurrencyTextField(
     showVietnameseWords: Boolean = true
 ) {
     val displayValue = if (amount == 0L) "" else CurrencyFormatter.formatNumberOnly(amount)
-    var showCalculator by remember { mutableStateOf(false) }
+    var showCalculator by rememberSaveable { mutableStateOf(false) }
+    val currentOnAmountChange by rememberUpdatedState(onAmountChange)
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+
+    fun openCalculator() {
+        keyboardController?.hide()
+        focusManager.clearFocus(force = true)
+        showCalculator = true
+    }
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
             if (interaction is PressInteraction.Release) {
-                showCalculator = true
+                openCalculator()
             }
         }
     }
@@ -116,7 +130,7 @@ fun CurrencyTextField(
                             )
                         }
                     }
-                    IconButton(onClick = { showCalculator = true }) {
+                    IconButton(onClick = { openCalculator() }) {
                         Icon(
                             imageVector = Icons.Default.Calculate,
                             contentDescription = "Mở bàn phím tính tiền",
@@ -171,26 +185,55 @@ fun CurrencyTextField(
     }
 
     if (showCalculator) {
-        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-        ModalBottomSheet(
+        Dialog(
             onDismissRequest = { showCalculator = false },
-            sheetState = sheetState,
-            containerColor = MaterialTheme.colorScheme.surface,
-            dragHandle = null
-        ) {
-            CurrencyCalculatorSheet(
-                label = label,
-                initialAmount = amount,
-                unitSuffix = unitSuffix,
-                showVietnameseWords = showVietnameseWords,
-                quickFillLabel = quickFillLabel,
-                quickFillAmount = quickFillAmount,
-                onApply = { evaluated ->
-                    onAmountChange(evaluated)
-                    showCalculator = false
-                },
-                onClose = { showCalculator = false }
+            properties = DialogProperties(
+                usePlatformDefaultWidth = false
             )
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.55f))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { showCalculator = false }
+                    )
+                    .padding(horizontal = 16.dp, vertical = 24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {}
+                        ),
+                    shape = RoundedCornerShape(24.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 8.dp,
+                    border = BorderStroke(1.5.dp, BluePrimary.copy(alpha = 0.65f))
+                ) {
+                    CurrencyCalculatorSheet(
+                        label = label,
+                        initialAmount = amount,
+                        unitSuffix = unitSuffix,
+                        showVietnameseWords = showVietnameseWords,
+                        quickFillLabel = quickFillLabel,
+                        quickFillAmount = quickFillAmount,
+                        onLiveChange = { evaluated ->
+                            currentOnAmountChange(evaluated)
+                        },
+                        onApply = { evaluated ->
+                            currentOnAmountChange(evaluated)
+                            showCalculator = false
+                        },
+                        onClose = { showCalculator = false }
+                    )
+                }
+            }
         }
     }
 }
@@ -203,11 +246,12 @@ private fun CurrencyCalculatorSheet(
     showVietnameseWords: Boolean,
     quickFillLabel: String?,
     quickFillAmount: Long?,
+    onLiveChange: (Long) -> Unit,
     onApply: (Long) -> Unit,
     onClose: () -> Unit
 ) {
     val haptic = LocalHapticFeedback.current
-    var rawExpression by remember(initialAmount) {
+    var rawExpression by rememberSaveable {
         mutableStateOf(if (initialAmount > 0L) initialAmount.toString() else "")
     }
 
@@ -219,50 +263,59 @@ private fun CurrencyCalculatorSheet(
     }
     val isDivisionByZero = rawExpression.isNotEmpty() && evaluatedValue == null
 
+    fun updateExpression(newExpression: String) {
+        rawExpression = newExpression
+        val evaluated = if (newExpression.isEmpty()) 0L else CurrencyExpressionEvaluator.evaluate(newExpression)
+        if (evaluated != null) {
+            onLiveChange(evaluated)
+        }
+    }
+
     fun appendDigits(digits: String) {
         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-        if (rawExpression == "0") {
-            rawExpression = if (digits.all { it == '0' }) "0" else digits.trimStart('0').ifEmpty { "0" }
+        val next = if (rawExpression == "0") {
+            if (digits.all { it == '0' }) "0" else digits.trimStart('0').ifEmpty { "0" }
         } else {
-            rawExpression += digits
+            rawExpression + digits
         }
+        updateExpression(next)
     }
 
     fun appendOperator(op: Char) {
         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         if (rawExpression.isEmpty()) return
         val last = rawExpression.last()
-        rawExpression = if (CurrencyExpressionEvaluator.isOperator(last)) {
+        val next = if (CurrencyExpressionEvaluator.isOperator(last)) {
             rawExpression.dropLast(1) + op
         } else {
             rawExpression + op
         }
+        updateExpression(next)
     }
 
     fun backspace() {
         if (rawExpression.isNotEmpty()) {
             haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-            rawExpression = rawExpression.dropLast(1)
+            updateExpression(rawExpression.dropLast(1))
         }
     }
 
     fun clearAll() {
         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-        rawExpression = ""
+        updateExpression("")
     }
 
     fun evaluateInPlace() {
         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         val result = CurrencyExpressionEvaluator.evaluate(rawExpression)
         if (result != null) {
-            rawExpression = if (result == 0L) "" else result.toString()
+            updateExpression(if (result == 0L) "" else result.toString())
         }
     }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .navigationBarsPadding()
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -280,7 +333,16 @@ private fun CurrencyCalculatorSheet(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
             )
-            IconButton(onClick = onClose) {
+            IconButton(
+                onClick = {
+                    val latest = if (rawExpression.isEmpty()) 0L else CurrencyExpressionEvaluator.evaluate(rawExpression)
+                    if (latest != null) {
+                        onApply(latest)
+                    } else {
+                        onClose()
+                    }
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Đóng bàn phím"
@@ -355,7 +417,7 @@ private fun CurrencyCalculatorSheet(
             AssistChip(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                    rawExpression = if (quickFillAmount == 0L) "" else quickFillAmount.toString()
+                    updateExpression(if (quickFillAmount == 0L) "" else quickFillAmount.toString())
                 },
                 label = { Text(text = quickFillLabel, fontWeight = FontWeight.Bold) },
                 colors = AssistChipDefaults.assistChipColors(
@@ -455,7 +517,12 @@ private fun CurrencyCalculatorSheet(
                     enabled = !isDivisionByZero,
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        onApply(evaluatedValue ?: 0L)
+                        val latestValue = if (rawExpression.isEmpty()) {
+                            0L
+                        } else {
+                            CurrencyExpressionEvaluator.evaluate(rawExpression) ?: return@CalcKeyButton
+                        }
+                        onApply(latestValue)
                     }
                 )
             }

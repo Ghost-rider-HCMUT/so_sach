@@ -63,6 +63,8 @@ import com.sotraubo.app.core.common.search.VietnameseTextNormalizer
 import com.sotraubo.app.core.designsystem.component.DateSectionHeader
 import com.sotraubo.app.core.designsystem.component.DropdownSelector
 import com.sotraubo.app.core.designsystem.component.EmptyStateView
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.InfoLine
 import com.sotraubo.app.core.designsystem.component.ScrollToTopButton
 import com.sotraubo.app.core.designsystem.theme.responsiveSp
@@ -237,6 +239,7 @@ fun MuaBanScreen(
                     )
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.MUA_BAN)
                     TopBarPrimaryAction(
                         label = "Ghi sổ",
                         onClick = { showCreatePicker = true }

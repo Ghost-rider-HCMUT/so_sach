@@ -77,6 +77,8 @@ import com.sotraubo.app.core.designsystem.theme.responsiveSp
 import com.sotraubo.app.core.ui.components.InstallmentPaymentDialog
 import com.sotraubo.app.core.designsystem.component.AttachmentPickerSection
 import com.sotraubo.app.core.designsystem.component.CurrencyTextField
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.DateSectionHeader
 import com.sotraubo.app.core.designsystem.component.EmptyStateView
 import com.sotraubo.app.core.designsystem.component.ErrorBanner
@@ -236,7 +238,15 @@ fun TradeOrderFormScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(screenTitle, fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        text = screenTitle,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -247,6 +257,12 @@ fun TradeOrderFormScreen(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(
+                        guide = ScreenHelpGuides.tradeOrderForm(
+                            isPurchase = isPurchase,
+                            isEditing = isEditing
+                        )
+                    )
                     if (isEditing && onDeleteOrder != null) {
                         IconButton(onClick = { showDeleteConfirm = true }) {
                             Icon(

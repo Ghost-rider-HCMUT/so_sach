@@ -203,7 +203,7 @@ class FullAppUiUxQcTest {
             }
         }
         composeRule.onNodeWithText("QUẢN LÝ").assertIsDisplayed()
-        composeRule.onNodeWithText("DEL").assertIsDisplayed()
+        composeRule.onNodeWithText("Xóa").assertIsDisplayed()
     }
 
     @Test
@@ -306,7 +306,7 @@ class FullAppUiUxQcTest {
     fun qc09_dashboardEmpty_showsHeaderAndSingleBackupPdfButton() {
         setEmptyDashboard()
         composeRule.onNodeWithText("Quản Lý").assertIsDisplayed()
-        composeRule.onNodeWithText("Sao lưu / PDF").assertIsDisplayed()
+        composeRule.onNodeWithText("Sao lưu").assertIsDisplayed()
     }
 
     @Test
@@ -323,41 +323,44 @@ class FullAppUiUxQcTest {
     @Test
     fun qc11_dashboardEmpty_showsPlainLanguageOverviewSections() {
         setEmptyDashboard()
-        composeRule.onNodeWithText("TIỀN ĐANG CẦM TRONG TAY").assertIsDisplayed()
-        composeRule.onNodeWithText("1. TIỀN ĐÃ QUA TAY (THỰC TẾ)").assertIsDisplayed()
-        composeRule.onNodeWithText("2. NỢ CHƯA THU / CHƯA TRẢ").assertIsDisplayed()
-        composeRule.onNodeWithText("3. NẾU THU & TRẢ HẾT NỢ (DỰ KIẾN)").assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
+        composeRule.onNodeWithText("TIỀN ĐANG CẦM").assertIsDisplayed()
+        composeRule.onNodeWithText("1. NẾU THU & TRẢ HẾT NỢ (DỰ KIẾN)").assertIsDisplayed()
+        composeRule.onNodeWithText("2. TIỀN ĐÃ QUA TAY (THỰC TẾ)").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("3. NỢ CHƯA THU / CHƯA TRẢ").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun qc12_dashboardEmpty_showsZeroValuesCleanly() {
         setEmptyDashboard()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
         composeRule.onAllNodesWithText("0 đ").onFirst().assertIsDisplayed()
-        composeRule.onNode(hasScrollToIndexAction()).performScrollToIndex(1)
-        composeRule.onNodeWithText("Tổng thu (đã thu + nợ):").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("Tổng chi (đã chi + nợ):").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Tổng thu:").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Tổng chi:").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun qc13_dashboardPopulated_showsCombinedCashInAndCashOut() {
         setPopulatedDashboard()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
         // 643M + 40M = 683.000.000 đ; 522M + 256.9M = 778.900.000 đ
-        composeRule.onNodeWithText("683.000.000 đ").assertIsDisplayed()
-        composeRule.onNodeWithText("778.900.000 đ").assertIsDisplayed()
+        composeRule.onNodeWithText("683.000.000 đ").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("778.900.000 đ").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun qc14_dashboardPopulated_showsBathDebtBreakdown() {
         setPopulatedDashboard()
-        composeRule.onNode(hasScrollToIndexAction()).performScrollToIndex(1)
-        composeRule.onNodeWithText("Người ta nợ mình (Hàng + Bath):").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
+        composeRule.onNodeWithText("Công nợ phải thu:").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithText("268.500.000 đ").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun qc15_dashboardPopulated_initialCapitalUpdatesCashInHand() {
         setPopulatedDashboard(initialCapital = 200_000_000L)
-        composeRule.onNodeWithText("200.000.000 đ").assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
+        composeRule.onNodeWithText("200.000.000 đ").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -388,29 +391,29 @@ class FullAppUiUxQcTest {
     fun qc19_dashboard_backupPdfButtonTriggersCallback() {
         var clicked = false
         setPopulatedDashboard(onOpenBackup = { clicked = true })
-        composeRule.onNodeWithText("Sao lưu / PDF").performClick()
+        composeRule.onNodeWithText("Sao lưu").performClick()
         assertTrue(clicked)
     }
 
     @Test
     fun qc20_dashboard_initialCapitalClickOpensDialog() {
         setPopulatedDashboard()
-        composeRule.onNodeWithText("Vốn ban đầu (bấm để sửa)").performClick()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
+        composeRule.onNodeWithText("Vốn ban đầu").performScrollTo().performClick()
         composeRule.onNodeWithText("Lưu vốn").assertIsDisplayed()
     }
 
     @Test
     fun qc21_dashboard_scrollShowsBathChartSection() {
         setPopulatedDashboard()
-        composeRule.onNode(hasScrollToIndexAction()).performScrollToIndex(3)
-        composeRule.onNodeWithText("BIỂU ĐỒ ĐỔI BATH THÁI").assertIsDisplayed()
+        composeRule.onNodeWithText("THỐNG KÊ KINH DOANH").performScrollTo().performClick()
+        composeRule.onNodeWithText("BIỂU ĐỒ ĐỔI BATH THÁI").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun qc22_dashboard_scrollShowsDebtSectionAndDebtor() {
         setPopulatedDashboard()
-        composeRule.onNode(hasScrollToIndexAction()).performScrollToIndex(3)
-        composeRule.onNodeWithText("CÔNG NỢ NỔI BẬT").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("CÔNG NỢ NỔI BẬT").performScrollTo().performClick()
         composeRule.onNodeWithText("Chị Ngọc", substring = true).performScrollTo().assertIsDisplayed()
     }
 
@@ -437,8 +440,8 @@ class FullAppUiUxQcTest {
             }
         }
         composeRule.onNodeWithText("Quản Lý").assertIsDisplayed()
-        composeRule.onNodeWithText("Sao lưu / PDF").assertIsDisplayed()
-        composeRule.onNodeWithText("TIỀN ĐANG CẦM TRONG TAY").assertIsDisplayed()
+        composeRule.onNodeWithText("Sao lưu").assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").assertIsDisplayed()
     }
 
     @Test
@@ -464,7 +467,8 @@ class FullAppUiUxQcTest {
             }
         }
         composeRule.onNodeWithText("Quản Lý").assertIsDisplayed()
-        composeRule.onNodeWithText("1. TIỀN ĐÃ QUA TAY (THỰC TẾ)").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performScrollTo().performClick()
+        composeRule.onNodeWithText("2. TIỀN ĐÃ QUA TAY (THỰC TẾ)").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -487,7 +491,8 @@ class FullAppUiUxQcTest {
                 )
             }
         }
-        composeRule.onAllNodesWithText("-15.000.000 đ").onFirst().assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
+        composeRule.onAllNodesWithText("-15.000.000 đ").onFirst().performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -579,8 +584,8 @@ class FullAppUiUxQcTest {
             }
         }
         composeRule.onNodeWithText("Khách chuyển Việt").performClick()
-        composeRule.onNodeWithText("Tiền Việt cần thu - Lý thuyết (đ)").assertIsDisplayed()
-        composeRule.onNodeWithText("Tiền Việt đã thu - Thực tế (đ)").assertIsDisplayed()
+        composeRule.onNodeWithText("Tiền Việt cần thu").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Tiền Việt đã thu").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -597,7 +602,7 @@ class FullAppUiUxQcTest {
             }
         }
         composeRule.onNodeWithText("Lưu thông tin").performScrollTo().performClick()
-        composeRule.onNodeWithText("Vui lòng nhập Số tiền Việt (đã thu hoặc cần thu), hoặc nhập đủ Số Bath và Tỉ giá.").assertIsDisplayed()
+        composeRule.onNodeWithText("Vui lòng nhập Số tiền Việt (đã thu hoặc cần thu), hoặc nhập đủ Số Bath và Giá bán.").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -613,9 +618,9 @@ class FullAppUiUxQcTest {
                 )
             }
         }
-        composeRule.onNodeWithText("Số Bath (฿ - tùy chọn)").assertIsDisplayed()
-        composeRule.onNodeWithText("Tỉ giá (đ / 1 Bath - tùy chọn)").assertIsDisplayed()
-        composeRule.onNodeWithText("Số tiền Việt (đ)").assertIsDisplayed()
+        composeRule.onNodeWithText("Số Bath").assertIsDisplayed()
+        composeRule.onNodeWithText("Tỉ giá").assertIsDisplayed()
+        composeRule.onNodeWithText("Số tiền Việt").assertIsDisplayed()
     }
 
     @Test
@@ -699,7 +704,7 @@ class FullAppUiUxQcTest {
         composeRule.onNodeWithText("Khách chuyển Việt").performClick()
         composeRule.onNodeWithText("Ghi thêm đợt khách chuyển tiền").performClick()
         composeRule.onNodeWithText("Điền đủ 25.000.000 đ").performClick()
-        composeRule.onNodeWithText("Ghi chú đợt này (tùy chọn)").performTextInput("CK VCB")
+        composeRule.onNodeWithText("Ghi chú đợt này").performTextInput("CK VCB")
         composeRule.onNodeWithText("Lưu đợt này").performClick()
 
         assertTrue(saved?.note?.contains("CK VCB") == true)
@@ -923,7 +928,7 @@ class FullAppUiUxQcTest {
         }
         composeRule.onNodeWithText("Ghi thêm đợt khách trả tiền").performScrollTo().performClick()
         composeRule.onNodeWithText("Điền đủ 50.000.000 đ").performClick()
-        composeRule.onNodeWithText("Ghi chú đợt này (tùy chọn)").performTextInput("Trả đủ")
+        composeRule.onNodeWithText("Ghi chú đợt này").performTextInput("Trả đủ")
         composeRule.onNodeWithText("Lưu đợt này").performClick()
 
         assertEquals(50_000_000L, capturedAdded)
@@ -1327,8 +1332,9 @@ class FullAppUiUxQcTest {
                 )
             }
         }
-        composeRule.onNodeWithText("TIỀN ĐANG CẦM TRONG TAY").assertIsDisplayed()
-        composeRule.onNodeWithText("Lời/Lỗ thực tế:").assertIsDisplayed()
-        composeRule.onAllNodesWithText("999.999.999.999.999 đ").onFirst().assertIsDisplayed()
+        composeRule.onNodeWithText("TÌNH HÌNH TIỀN BẠC").performClick()
+        composeRule.onNodeWithText("TIỀN ĐANG CẦM").assertIsDisplayed()
+        composeRule.onNodeWithText("Lời/Lỗ thực tế:").performScrollTo().assertIsDisplayed()
+        composeRule.onAllNodesWithText("999.999.999.999.999 đ").onFirst().performScrollTo().assertIsDisplayed()
     }
 }

@@ -15,8 +15,8 @@ import javax.crypto.spec.GCMParameterSpec
 
 /**
  * Bộ quản lý mật khẩu 6 chữ số (PIN 6 số) bảo vệ ứng dụng khi mở máy:
- * - Bỏ hoàn toàn bước bắt thiết lập lần đầu: Nếu chưa có mật khẩu tùy chỉnh, sử dụng mật khẩu 6 số mặc định (123456).
- * - Khi người dùng đổi mật khẩu, lưu băm SHA-256 kèm Salt 16 bytes và mã hóa bằng AES-256-GCM trong Android Keystore.
+ * - Lần đầu sử dụng (`isPinConfigured() == false`): Yêu cầu người dùng tự thiết lập mật khẩu 6 số mới.
+ * - Lưu băm SHA-256 kèm Salt 16 bytes và mã hóa bằng AES-256-GCM trong Android Keystore.
  */
 interface PinSecurityStorage {
     fun isPinConfigured(): Boolean
@@ -34,7 +34,6 @@ class PinSecurityManager(
 
     companion object {
         const val PIN_LENGTH = 6
-        const val DEFAULT_PIN = "123456"
         private const val ANDROID_KEYSTORE = "AndroidKeyStore"
         private const val KEY_ALIAS = "so_trau_bo_pin_aes_key"
         private const val TRANSFORMATION = "AES/GCM/NoPadding"

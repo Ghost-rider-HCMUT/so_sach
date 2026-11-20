@@ -80,6 +80,8 @@ import androidx.compose.ui.unit.dp
 import com.sotraubo.app.core.common.format.CurrencyFormatter
 import com.sotraubo.app.core.common.format.DateFormatter
 import com.sotraubo.app.core.designsystem.component.CurrencyTextField
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.common.format.ReportPeriodType
 import com.sotraubo.app.core.database.entity.CurrencyExchangeEntity
 import com.sotraubo.app.core.database.entity.FamilyExpenseEntity
@@ -177,6 +179,7 @@ fun DashboardScreen(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.DASHBOARD)
                     TextButton(onClick = onOpenBackupAndReport) {
                         Icon(
                             imageVector = Icons.Default.Backup,
@@ -245,25 +248,41 @@ fun DashboardScreen(
         val cashInPeriod = remember(cashTransactions, periodRange) {
             cashTransactions.filter { it.transactionDate in periodRange.startMillis..periodRange.endMillis }
         }
-        val effectiveSummary = remember(ordersInPeriod, cashInPeriod) {
-            DashboardFinancialSummary(
-                totalCashIn = cashInPeriod.filter { it.flowType == CashFlowType.CASH_IN }.sumOf { it.amount },
-                totalCashOut = cashInPeriod.filter { it.flowType == CashFlowType.CASH_OUT }.sumOf { it.amount },
-                totalPurchaseAmount = ordersInPeriod.filter { it.orderType == TradeOrderType.PURCHASE }.sumOf { it.totalAmount },
-                totalSaleAmount = ordersInPeriod.filter { it.orderType == TradeOrderType.SALE }.sumOf { it.totalAmount },
-                totalReceivableDebt = ordersInPeriod.filter { it.orderType == TradeOrderType.SALE }.sumOf { it.remainingDebt },
-                totalPayableDebt = ordersInPeriod.filter { it.orderType == TradeOrderType.PURCHASE }.sumOf { it.remainingDebt }
-            )
+        val useFallbackSummary = tradeOrders.isEmpty() &&
+            cashTransactions.isEmpty() &&
+            selectedScopeType == ReportPeriodType.THIS_YEAR &&
+            isCurrentPeriod
+        val effectiveSummary = remember(summary, ordersInPeriod, cashInPeriod, useFallbackSummary) {
+            if (useFallbackSummary) {
+                summary
+            } else {
+                DashboardFinancialSummary(
+                    totalCashIn = cashInPeriod.filter { it.flowType == CashFlowType.CASH_IN }.sumOf { it.amount },
+                    totalCashOut = cashInPeriod.filter { it.flowType == CashFlowType.CASH_OUT }.sumOf { it.amount },
+                    totalPurchaseAmount = ordersInPeriod.filter { it.orderType == TradeOrderType.PURCHASE }.sumOf { it.totalAmount },
+                    totalSaleAmount = ordersInPeriod.filter { it.orderType == TradeOrderType.SALE }.sumOf { it.totalAmount },
+                    totalReceivableDebt = ordersInPeriod.filter { it.orderType == TradeOrderType.SALE }.sumOf { it.remainingDebt },
+                    totalPayableDebt = ordersInPeriod.filter { it.orderType == TradeOrderType.PURCHASE }.sumOf { it.remainingDebt }
+                )
+            }
         }
-        val scopeStats = remember(effectiveSummary, ordersInPeriod, activeScopeLabel) {
+        val scopeStats = remember(effectiveSummary, ordersInPeriod, activeScopeLabel, useFallbackSummary, periodStats) {
             PeriodBusinessStats(
                 periodLabel = activeScopeLabel,
                 totalPurchaseAmount = effectiveSummary.totalPurchaseAmount,
                 totalSaleAmount = effectiveSummary.totalSaleAmount,
                 totalCashIn = effectiveSummary.totalCashIn,
                 totalCashOut = effectiveSummary.totalCashOut,
-                purchaseCattleCount = ordersInPeriod.filter { it.orderType == TradeOrderType.PURCHASE }.sumOf { it.cattleQuantity },
-                saleCattleCount = ordersInPeriod.filter { it.orderType == TradeOrderType.SALE }.sumOf { it.cattleQuantity }
+                purchaseCattleCount = if (useFallbackSummary) {
+                    periodStats.purchaseCattleCount
+                } else {
+                    ordersInPeriod.filter { it.orderType == TradeOrderType.PURCHASE }.sumOf { it.cattleQuantity }
+                },
+                saleCattleCount = if (useFallbackSummary) {
+                    periodStats.saleCattleCount
+                } else {
+                    ordersInPeriod.filter { it.orderType == TradeOrderType.SALE }.sumOf { it.cattleQuantity }
+                }
             )
         }
         val effectiveBathExchanges = remember(bathExchanges, periodRange) {

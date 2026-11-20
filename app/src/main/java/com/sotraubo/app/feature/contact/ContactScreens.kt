@@ -63,6 +63,8 @@ import com.sotraubo.app.core.common.format.CurrencyFormatter
 import com.sotraubo.app.core.common.format.DateFormatter
 import com.sotraubo.app.core.common.search.VietnameseTextNormalizer
 import com.sotraubo.app.core.designsystem.component.EmptyStateView
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.ScrollToTopButton
 import com.sotraubo.app.core.designsystem.component.TopBarPrimaryAction
 import com.sotraubo.app.core.designsystem.component.ErrorBanner
@@ -119,6 +121,7 @@ fun ContactListScreen(
                     )
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.CONTACT_LIST)
                     TopBarPrimaryAction(
                         label = "Thêm mới",
                         onClick = { showCreateDialog = true }
@@ -347,6 +350,7 @@ fun ContactDetailScreen(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.CONTACT_DETAIL)
                     IconButton(onClick = onExportPersonPdf) {
                         Icon(
                             imageVector = Icons.Default.PictureAsPdf,

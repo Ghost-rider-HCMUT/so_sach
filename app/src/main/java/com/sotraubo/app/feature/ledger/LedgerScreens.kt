@@ -84,6 +84,8 @@ import com.sotraubo.app.core.database.entity.QuotaFeeEntity
 import com.sotraubo.app.core.model.ContactWithSummary
 import com.sotraubo.app.feature.contact.ContactPickerBottomSheet
 import com.sotraubo.app.core.designsystem.component.CurrencyTextField
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.DateSectionHeader
 import com.sotraubo.app.core.designsystem.component.DropdownSelector
 import com.sotraubo.app.core.designsystem.component.EmptyStateView
@@ -211,6 +213,7 @@ private fun <T> LedgerListScaffold(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.forLedgerList(title))
                     TopBarPrimaryAction(label = addLabel, onClick = onAdd)
                 }
             )
@@ -316,6 +319,7 @@ private fun LedgerFormScaffold(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.forLedgerForm(title))
                     if (onDelete != null) {
                         IconButton(onClick = { showDeleteConfirm = true }) {
                             Icon(
@@ -417,7 +421,14 @@ fun MoreHubScreen(
     val quotaMonth = quotaFees.filter { DateFormatter.isSameMonth(it.feeDate, now) }.sumOf { it.amount }
     val monthLabel = DateFormatter.formatMonthYear(now)
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Sổ phụ & Tiện ích", fontWeight = FontWeight.Bold) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Sổ phụ & Tiện ích", fontWeight = FontWeight.Bold) },
+                actions = { ScreenHelpButton(guide = ScreenHelpGuides.MORE_HUB) }
+            )
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -67,6 +67,8 @@ import com.sotraubo.app.core.common.format.DateFormatter
 import com.sotraubo.app.core.database.entity.CurrencyExchangeEntity
 import com.sotraubo.app.core.designsystem.component.DropdownSelector
 import com.sotraubo.app.core.designsystem.component.EmptyStateView
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.ScrollToTopButton
 import com.sotraubo.app.core.designsystem.component.SemanticBadge
 import com.sotraubo.app.core.designsystem.theme.GreenReceive
@@ -116,6 +118,9 @@ fun DebtOverviewScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Quản lý Công nợ", fontWeight = FontWeight.Bold) },
+                actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.DEBT_OVERVIEW)
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
@@ -593,6 +598,7 @@ fun PersonDebtDetailScreen(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(guide = ScreenHelpGuides.PERSON_DEBT_DETAIL)
                     IconButton(onClick = onExportPdfClick) {
                         Icon(
                             imageVector = Icons.Default.PictureAsPdf,

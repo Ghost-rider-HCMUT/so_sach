@@ -69,9 +69,9 @@ import com.sotraubo.app.core.designsystem.theme.RedTransfer
 import com.sotraubo.app.core.designsystem.theme.SurfaceElevatedDark
 
 /**
- * Màn hình Nhập Mật Khẩu 6 Số (Best Practices — 100% Tiếng Việt):
- * - Bỏ hoàn toàn màn hình bắt thiết lập lần đầu: Luôn hiển thị thẳng màn hình "Nhập mật khẩu mở sổ".
- * - Bàn phím số tròn chuẩn Banking/iOS/Material 3 (76dp mỗi phím, hiệu ứng gợn sóng tròn, phản hồi xúc giác Haptic).
+ * Màn hình Mật Khẩu 6 Số (100% Tiếng Việt):
+ * - Lần đầu chưa có mật khẩu (`!isCustomPinConfigured`): Hướng dẫn người dùng tự tạo & xác nhận mật khẩu 6 số.
+ * - Các lần sau: Hiển thị màn hình "Nhập mật khẩu 6 số" kèm sinh trắc học (nếu bật).
  */
 @Composable
 fun PinLockScreen(
@@ -360,7 +360,7 @@ fun PinLockScreen(
                         onClick = { handleClearAll() }
                     ) {
                         Text(
-                            text = "DEL",
+                            text = "Xóa",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = if (currentPinInput.isNotEmpty()) {

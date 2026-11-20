@@ -67,6 +67,8 @@ import com.sotraubo.app.core.common.format.DateFormatter
 import com.sotraubo.app.core.common.search.VietnameseTextNormalizer
 import com.sotraubo.app.core.designsystem.component.AttachmentPickerSection
 import com.sotraubo.app.core.designsystem.component.CurrencyTextField
+import com.sotraubo.app.core.designsystem.component.ScreenHelpButton
+import com.sotraubo.app.core.designsystem.component.ScreenHelpGuides
 import com.sotraubo.app.core.designsystem.component.DateSectionHeader
 import com.sotraubo.app.core.designsystem.component.EmptyStateView
 import com.sotraubo.app.core.designsystem.component.ErrorBanner
@@ -222,7 +224,15 @@ fun CashTransactionFormScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(titleText, fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        text = titleText,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -233,6 +243,13 @@ fun CashTransactionFormScreen(
                     }
                 },
                 actions = {
+                    ScreenHelpButton(
+                        guide = ScreenHelpGuides.cashTransactionForm(
+                            isCashIn = isCashIn,
+                            isEditing = isEditing
+                        ),
+                        onColoredBar = true
+                    )
                     if (isEditing && onDeleteTransaction != null) {
                         IconButton(onClick = { showDeleteConfirm = true }) {
                             Icon(
